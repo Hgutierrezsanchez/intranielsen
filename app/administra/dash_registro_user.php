@@ -5,7 +5,7 @@
 <?php
     $linkt=conectar();
 
-    $tarea=mysqli_query($linkt,"Select distinct nombre from tblperfiles");  
+    $tarea=mysqli_query($linkt,"Select nombre from tblperfiles group by nombre");  
 ?>
 
 

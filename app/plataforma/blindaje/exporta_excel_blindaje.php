@@ -25,24 +25,24 @@ elseif ($reporte == "FINALIZADAS"){
     if (substr($fecha,4,1)=="-" || substr($fecha,4,1)=="/" ){
         $fecha=substr($fecha, 0,4).substr($fecha, -5,2).substr($fecha, -2);
     }
-    $sql.=",bb.desde,bb.hasta,time(now()) ahora from  (tbl_blindaje_hist_gestion_hd hd inner join tbl_pendiente_blindaje pb on pb.id=hd.ID_ORDEN) inner join tbl_blindaje_bloques bb on pb.CODI_HORARIO=bb.bloque where pb.Fecha_Compromiso='$fecha' and  accion='FINALIZAR' and UBICACION='$nivel'";    
-    
-     
-    
+    $sql.=",bb.desde,bb.hasta,time(now()) ahora from  (tbl_blindaje_hist_gestion_hd hd inner join tbl_pendiente_blindaje pb on pb.id=hd.ID_ORDEN) inner join tbl_blindaje_bloques bb on pb.CODI_HORARIO=bb.bloque where pb.Fecha_Compromiso='$fecha' and  accion='FINALIZAR' and UBICACION='$nivel'";
+
+
+
 }
 elseif ($reporte == "REAGENDAMIENTO"){
-    
+
     $fecha=$bloque;
     if (substr($fecha,4,1)=="-" || substr($fecha,4,1)=="/" ){
         $fecha=substr($fecha, 0,4).substr($fecha, -5,2).substr($fecha, -2);
     }
-    $sql.=",bb.desde,bb.hasta,time(now()) ahora,hd.observacion from  (tbl_blindaje_hist_gestion_hd hd inner join tbl_pendiente_blindaje pb on pb.NMRO_ORDEN=hd.NMRO_ORDEN) inner join tbl_blindaje_bloques bb on pb.CODI_HORARIO=bb.bloque where hd.Fecha='$fecha' and accion='REAGENDAMIENTO'";    
-    
-     
-    
+    $sql.=",UBICACION,bb.desde,bb.hasta,time(now()) ahora,hd.observacion from  (tbl_blindaje_hist_gestion_hd hd inner join tbl_pendiente_blindaje pb on pb.NMRO_ORDEN=hd.NMRO_ORDEN) inner join tbl_blindaje_bloques bb on pb.CODI_HORARIO=bb.bloque where hd.Fecha='$fecha' and accion='REAGENDAMIENTO'";
+
+
+
 }
 elseif ($reporte == "BANDEJA_USUARIO"){
-    
+
     if ($view == 'N') {
         $sql_vista="and Marca<>'S'";
         $sql_filtro_estado="and FINAL<>'FINALIZADA' and fecha_compromiso<=date(now())";
@@ -59,41 +59,41 @@ elseif ($reporte == "BANDEJA_USUARIO"){
         $sql_vista="and Marca='N'";
         $sql_filtro_estado="and FINAL<>'FINALIZADA' and fecha_compromiso>date(now()) ";
     }
-    
+
     $sql_where="";
     $filtraje= mysqli_real_escape_string($linkc,$search);
     if ($filtraje != "")
     {
-        $sql_where="and ( COMUNA like '%$filtraje%' or 
-        RUT like '%$filtraje%' or 
-        NMRO_ORDEN like '%$filtraje%' or 
-        FECHA_COMPROMISO like '%$filtraje%' or 
-        CODI_HORARIO like '%$filtraje%' or 
-        ESTD_ACTIV like '%$filtraje%' or 
-        ESTADO_REAL like '%$filtraje%' or 
+        $sql_where="and ( COMUNA like '%$filtraje%' or
+        RUT like '%$filtraje%' or
+        NMRO_ORDEN like '%$filtraje%' or
+        FECHA_COMPROMISO like '%$filtraje%' or
+        CODI_HORARIO like '%$filtraje%' or
+        ESTD_ACTIV like '%$filtraje%' or
+        ESTADO_REAL like '%$filtraje%' or
         GESTION_HD like '%$filtraje%'
         )";
     }
-    
+
     $sql.=" ,'1' as desde From tbl_pendiente_blindaje pb where ejecutivo='$usuario' $sql_filtro_estado $sql_vista $sql_where ";
 }
 elseif ($reporte == "BANDEJA_BUSCAR"){
-    
+
     $sql_where="";
     $filtraje= mysqli_real_escape_string($linkc,$search);
     if ($filtraje != "")
     {
-        $sql_where="( COMUNA like '%$filtraje%' or 
-        RUT like '%$filtraje%' or 
-        NMRO_ORDEN like '%$filtraje%' or 
-        FECHA_COMPROMISO like '%$filtraje%' or 
-        CODI_HORARIO like '%$filtraje%' or 
-        ESTD_ACTIV like '%$filtraje%' or 
-        ESTADO_REAL like '%$filtraje%' or 
+        $sql_where="( COMUNA like '%$filtraje%' or
+        RUT like '%$filtraje%' or
+        NMRO_ORDEN like '%$filtraje%' or
+        FECHA_COMPROMISO like '%$filtraje%' or
+        CODI_HORARIO like '%$filtraje%' or
+        ESTD_ACTIV like '%$filtraje%' or
+        ESTADO_REAL like '%$filtraje%' or
         GESTION_HD like '%$filtraje%'
         )";
     }
-    
+
     $sql.=" ,'1' as desde From tbl_pendiente_blindaje pb where $sql_where ";
 }
 
@@ -105,7 +105,7 @@ $registros = mysqli_num_rows($query);
 
 
 if ($registros > 0) {
-    
+
     require_once('../../Classes_excel/PHPExcel.php');
     $objPHPExcel = new PHPExcel();
 
@@ -116,9 +116,9 @@ if ($registros > 0) {
                                     ->setSubject("Ejemplo 1")
                                     ->setDescription("Documento generado con PHPExcel")
                                     ->setKeywords("phpexcel")
-                                    ->setCategory("ciudades");    
-    
-    
+                                    ->setCategory("ciudades");
+
+
     //encabezado
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', 'N_ORDEN');
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('B1', 'RUT');
@@ -136,7 +136,7 @@ if ($registros > 0) {
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N1', 'DIAS');
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O1', 'REAGENDAMIENTO AUTODETECTADO');
 
-    $i = 2;    
+    $i = 2;
     while ($registro = mysqli_fetch_object ($query)) {
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A'.$i, $registro -> NMRO_ORDEN);
@@ -148,7 +148,7 @@ if ($registros > 0) {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('G'.$i, $registro -> GESTION_HD);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$i, $registro -> FINAL);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$i, $registro -> ACTIVIDAD);
-        
+
         $sql_obs="Select observacion,u.nombre from tbl_blindaje_hist_gestion_hd hd inner join tblusuario u on hd.idusuario=u.idusuario  where ID_ORDEN=".$registro -> ID." order by id desc limit 1";
         $query_obs=mysqli_query($linkc,$sql_obs);
         if( mysqli_num_rows($query_obs)>0){
@@ -157,23 +157,26 @@ if ($registros > 0) {
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('K'.$i, $r_obs -> nombre);
         }
         mysqli_free_result($query_obs);
-        
+
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$i, $registro -> FECHA_OT);
-        
+
         if (isset($registro -> observacion)){
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, $registro -> observacion);
         }
-        
+        if (isset($registro -> UBICACION)){
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$i, $registro -> UBICACION);
+        }
+
         $datetime1 = date('Y-m-d');
         $datetime2 = $registro -> FECHA_OT;
-        
+
         $dias	= (strtotime($datetime1)-strtotime($datetime2))/86400;
-	    $dias 	= abs($dias); $dias = floor($dias);
-        
+	      $dias 	= abs($dias); $dias = floor($dias);
+
         $DIF =$dias;
-        
-        
-        
+
+
+
         if ($DIF > 30) $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$i,'> 1 MES');
         elseif ($DIF > 21)  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$i,'> 3 SEMANAS');
         elseif ($DIF > 7)   $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$i,'> 1 SEMANA');
@@ -183,26 +186,26 @@ if ($registros > 0) {
         elseif ($DIF == 1)  $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$i,'24 HORAS');
         elseif ($DIF == 0 ) $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$i,'HOY');
         elseif ($DIF <= 0 ) $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M'.$i,'FUTURO');
-        
+
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$i, $DIF);
-        
-        
-        
+
+
+
         $i++;
     }
     mysqli_free_result($query);
     mysqli_close($linkc);
-    
+
     //autisize para las columna
     foreach(range('A','O') as $columnID)
     {
         $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
     }
-    
+
     $objPHPExcel->setActiveSheetIndex(0);
-    
+
     $objPHPExcel->getActiveSheet()->setTitle($reporte);
-    
+
     header('Content-Type: application/vnd.ms-excel');
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="reporte_blindaje.xlsx"');
