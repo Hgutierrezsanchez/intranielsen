@@ -31,11 +31,12 @@ elseif ($reporte == "FINALIZADAS"){
     
 }
 elseif ($reporte == "REAGENDAMIENTO"){
+    
     $fecha=$bloque;
     if (substr($fecha,4,1)=="-" || substr($fecha,4,1)=="/" ){
         $fecha=substr($fecha, 0,4).substr($fecha, -5,2).substr($fecha, -2);
     }
-    $sql.=",bb.desde,bb.hasta,time(now()) ahora,hd.observacion from  (tbl_blindaje_hist_gestion_hd hd inner join tbl_pendiente_blindaje pb on pb.NMRO_ORDEN=hd.NMRO_ORDEN) inner join tbl_blindaje_bloques bb on pb.CODI_HORARIO=bb.bloque where hd.Fecha='$fecha' and  accion='REAGENDAMIENTO'";    
+    $sql.=",bb.desde,bb.hasta,time(now()) ahora,hd.observacion from  (tbl_blindaje_hist_gestion_hd hd inner join tbl_pendiente_blindaje pb on pb.NMRO_ORDEN=hd.NMRO_ORDEN) inner join tbl_blindaje_bloques bb on pb.CODI_HORARIO=bb.bloque where hd.Fecha='$fecha' and accion='REAGENDAMIENTO'";    
     
      
     
@@ -104,7 +105,7 @@ $registros = mysqli_num_rows($query);
 
 
 if ($registros > 0) {
-    //require_once 'Classes/PHPExcel.php';
+    
     require_once('../../Classes_excel/PHPExcel.php');
     $objPHPExcel = new PHPExcel();
 
@@ -148,8 +149,8 @@ if ($registros > 0) {
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('H'.$i, $registro -> FINAL);
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('I'.$i, $registro -> ACTIVIDAD);
         
-        $sql="Select observacion,u.nombre from tbl_blindaje_hist_gestion_hd hd inner join tblusuario u on hd.idusuario=u.idusuario  where ID_ORDEN=".$registro -> ID." order by id desc limit 1";
-        $query_obs=mysqli_query($linkc,$sql);
+        $sql_obs="Select observacion,u.nombre from tbl_blindaje_hist_gestion_hd hd inner join tblusuario u on hd.idusuario=u.idusuario  where ID_ORDEN=".$registro -> ID." order by id desc limit 1";
+        $query_obs=mysqli_query($linkc,$sql_obs);
         if( mysqli_num_rows($query_obs)>0){
             $r_obs = mysqli_fetch_object ($query_obs);
             $objPHPExcel->setActiveSheetIndex(0)->setCellValue('J'.$i, $r_obs -> observacion);
@@ -159,6 +160,9 @@ if ($registros > 0) {
         
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$i, $registro -> FECHA_OT);
         
+        if (isset($registro -> observacion)){
+            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, $registro -> observacion);
+        }
         
         $datetime1 = date('Y-m-d');
         $datetime2 = $registro -> FECHA_OT;
@@ -182,9 +186,7 @@ if ($registros > 0) {
         
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N'.$i, $DIF);
         
-        if (isset($regitro->observacion)){
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, $regitro->observacion);
-        }
+        
         
         $i++;
     }
@@ -192,7 +194,7 @@ if ($registros > 0) {
     mysqli_close($linkc);
     
     //autisize para las columna
-    foreach(range('A','N') as $columnID)
+    foreach(range('A','O') as $columnID)
     {
         $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
     }
