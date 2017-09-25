@@ -1,0 +1,152 @@
+input#inputEmail.form-control{
+}
+
+a.forgot-password{
+}
+
+
+#navbar-default { 
+    background-color: #f8f8f8;
+    border-color: #e7e7e7;
+        position: relative;
+    min-height: 50px;
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+    border: 1px solid transparent;
+}
+.derecha{
+	float: right !important;
+	margin-right: 40% !important;
+}
+
+
+body {font-family: Arial, Helvetica, sans-serif;
+    background: url(../../img/login-bg.jpg) no-repeat fixed;
+    }
+
+table.bb {     font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    font-size: 12px;    margin: 45px;     width: 480px; text-align: left;    border-collapse: collapse; }
+
+/*th {     font-size: 13px;     font-weight: normal;     padding: 8px;     background: #b9c9fe;
+    border-top: 4px solid #aabcfe;    border-bottom: 1px solid #fff; color: #039; }*/
+
+/*td {    padding: 8px;     background: #e8edff;     border-bottom: 1px solid #fff;
+    color: #669;    border-top: 1px solid transparent; }*/
+
+tbody tr:hover td { background: #d0dafd; color: #339; }
+
+div.login-box-body{
+    border-radius: 20px;
+}
+p.login-box-msg, .register-box-msg{
+ text-shadow: 0px 1px 20px black;   
+}
+.row {
+    margin-right: -35%;
+    margin-left: 35%;
+}
+.bloging {
+        font-weight: 700;
+    height: 36px;
+    line-height: 36px;
+    font-size: 14px;
+    background: rgb(108, 185, 209);
+    border-radius: 10px !important;
+    border: none;
+    transition: all 0.218s;
+    padding: 0;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary.hover {
+ background: rgb(220, 96, 11) !important;   
+}
+
+.div_modal {
+  display: none;
+  position: fixed;
+  top: 15%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #002640;
+  opacity: .80;
+  -webkit-opacity: .8;
+  -moz-opacity: .8;
+  filter: alpha(opacity=80);
+  z-index: 820;
+}
+
+
+.div_contenido {
+  background-color: #ecf0f5;
+  box-shadow: 0 0 20px 0 #222;
+  -webkit-box-shadow: 0 0 20px 0 #222;
+  -moz-box-shadow: 0 0 20px 0 #222;
+  display: none;
+  height: 50%;
+  margin-left: 4%;
+  margin-right: 2%;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  position: fixed;
+  top: 16%;
+  width: auto;
+  min-height: 90%;
+  z-index: 830;
+  overflow: auto;
+}
+
+
+.pagination {
+    height: 36px;
+    margin: 18px 0;
+}
+.pagination ul {
+    border-radius: 3px 3px 3px 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    display: inline-block;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+.pagination li {
+    display: inline;
+}
+.pagination a {
+    -moz-border-bottom-colors: none;
+    -moz-border-image: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    border-color: #DDDDDD;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    float: left;
+    line-height: 34px;
+    padding: 0 14px;
+    text-decoration: none;
+}
+.pagination a:hover, .pagination .active a {
+    background-color: #F5F5F5;
+}
+.pagination .active a {
+    color: #999999;
+    cursor: default;
+}
+.pagination .disabled a, .pagination .disabled a:hover {
+    background-color: transparent;
+    color: #999999;
+    cursor: default;
+}
+.pagination li:first-child a {
+    border-left-width: 1px;
+    border-radius: 3px 0 0 3px;
+}
+.pagination li:last-child a {
+    border-radius: 0 3px 3px 0;
+}
+.pagination-centered {
+    text-align: center;
+}
+.pagination-right {
+    text-align: right;
+}

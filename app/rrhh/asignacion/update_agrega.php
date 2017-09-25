@@ -1,0 +1,26 @@
+<head>
+	<meta charset="utf-8">
+</head>
+
+<?php
+
+include_once("../../../includes/conexion.php");
+$link=conectar();
+$usuario=$_POST['usuario'];
+
+
+extract($_POST);
+$estado=array_keys($_POST);
+//mysqli_query($link,"Delete From tblsuperejecutivo Where idusuariosuper='$usuario'");
+for($j=0; $j<sizeof($estado); $j++)
+{
+	$opcion=explode(",",$estado[$j]);
+	mysqli_query($link,"Insert Into tblsuperejecutivo(idusuariosuper,idusuarioejecutivo) values('$usuario','$opcion[0]')") ;
+}
+mysqli_close($link);
+
+    echo "<br />";
+    echo "<div class='callout callout-success'>";
+        echo "Asignación actualizada satisfactoriamente...";
+    echo "</div>";
+?>
