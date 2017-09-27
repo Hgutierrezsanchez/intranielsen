@@ -510,13 +510,14 @@ function mostrar_orden_reagendar(nmro_orden){
     ajax = objetoAjax();
     if (nmro_orden != '' ){
         ajax.open("POST", "../../app/plataforma/blindaje/mostrar_orden_reagendar.php", true);
+				ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+				ajax.send("nmro_orden=" + nmro_orden);
         ajax.onreadystatechange = function () {
             if (ajax.readyState == 4) {
                 divResultado.innerHTML = ajax.responseText;
             }
         }
-        ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        ajax.send("nmro_orden=" + nmro_orden);
+
     }else{
         divResultado.innerHTML = "";
     }
