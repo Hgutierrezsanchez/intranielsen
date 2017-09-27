@@ -502,6 +502,28 @@ function mostrar_observaciones_orden(nmro_orden){
         $('#capa_para_edicion').html(result)
     })
 }
+function registrar_reagendamiento(){
+
+	var NMOR_ORDEN=document.getElementById('search_r').value
+	var FECHA_ODL=document.getElementById('fecha_old').value
+	var BLOQUE_OLD=document.getElementById('bloque_old').value
+	var FECHA_NEW=document.getElementById('fecha_new').value
+	var BLOQUE_NEW=document.getElementById('bloque_new').value
+	var MOTIVO=document.getElementById('sel_motivo').value
+	var OBSERVACION=document.getElementById('observacion').value
+	var TECNICO=document.getElementById('tecnico').value
+
+  $.ajax({
+        url: '../../app/plataforma/blindaje/update_registra_reagendamiento.php',
+        type: 'POST',
+        dataType: 'html',
+        data: { nmro_orden: NMOR_ORDEN,fecha_old: FECHA_ODL,bloque_old: BLOQUE_OLD,fecha_new: FECHA_NEW,bloque_new: BLOQUE_NEW,motivo: MOTIVO,observacion: OBSERVACION,tecnico: TECNICO }
+    })
+    .done (function(result){
+        $('#mostrar_orden_reagendar').html(result)
+    })
+
+}
 function mostrar_orden_reagendar(nmro_orden){
     $("#mostrar_orden_reagendar").html($("#cargador").html());
 

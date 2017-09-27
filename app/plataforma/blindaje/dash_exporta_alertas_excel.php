@@ -2,7 +2,7 @@
 	<meta charset="utf-8">
 </head>
 <?php
-    
+
     $link=conectar();
 ?>
 <section class="content-header">
@@ -12,7 +12,7 @@
 </section>
 
 <section class="content">
-   <?php 
+   <?php
         $sql="select bloque from tbl_blindaje_bloques where desde<=time(now()) and hasta>=time(now()) and vista='Hoy'";
         $query=mysqli_query($link,$sql);
         $r_bloque=mysqli_fetch_object($query);
@@ -64,23 +64,14 @@
                             <a href="#" onclick="exporta_excel_blindaje('Nivel 1','INCUMPLIMIENTO',document.getElementById('bloque_ant_n1').value)" ><button class='btn btn-success btn-xs'> Exportar a Excel </button></a>
                         </div><!-- /.info-box-content -->
                     </div><!-- /.info-box -->
-                    <div class="info-box">
-                        <span class="info-box-icon bg-aqua"><i class="ion ion-android-archive"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text">Reagendamientos Autodetectadas</span>
-                            <span class="info-box-text">Detectados el:</span>
-                            <?php echo "<input id='bloque_reg' type='date' value='".date('Y-m-d')."' >";?>
-                            <p />
-                            <a href="#" onclick="exporta_excel_blindaje('TODAS','REAGENDAMIENTO',document.getElementById('bloque_reg').value)" ><button class='btn btn-success btn-xs'> Exportar a Excel </button></a>
-                        </div><!-- /.info-box-content -->
-                    </div><!-- /.info-box -->
+
                 </div>
             </div>
-        </div><!-- /Nivel 1 --> 
+        </div><!-- /Nivel 1 -->
         <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Alertas Nivel 2 ATRASADAS</h3>
+                    <h3 class="box-title">Alertas Nivel 2 ESCALAMIENTOS</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                     </div>
@@ -96,10 +87,30 @@
                             <a href="#" onclick="exporta_excel_blindaje('Nivel 2','INCUMPLIMIENTO_AYER',document.getElementById('ayer_n2').value)" ><button class='btn btn-success btn-xs'> Exportar a Excel </button></a>
                         </div><!-- /.info-box-content -->
                     </div><!-- /.info-box -->
-
+										<div class="info-box">
+                        <span class="info-box-icon bg-aqua"><i class="ion ion-android-archive"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Reagendamientos Autodetectadas</span>
+                            <span class="info-box-text">Detectados el:</span>
+                            <?php echo "<input id='bloque_reg' type='date' value='".date('Y-m-d')."' >";?>
+                            <p />
+                            <a href="#" onclick="exporta_excel_blindaje('TODAS','REAGENDAMIENTO',document.getElementById('bloque_reg').value)" ><button class='btn btn-success btn-xs'> Exportar a Excel </button></a>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
+										<div class="info-box">
+                        <span class="info-box-icon bg-aqua"><i class="ion ion-android-archive"></i></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Reagendamientos Registrados</span>
+                            <span class="info-box-text">Efectuados el:</span>
+                            <?php echo "<input id='bloque_regreg' type='date' value='".date('Y-m-d')."' >";?>
+                            <p />
+                            <a href="#" onclick="exporta_excel_blindaje('TODAS','REAGENDAREGISTRADOS',document.getElementById('bloque_regreg').value)" ><button class='btn btn-success btn-xs'> Exportar a Excel </button></a>
+                        </div><!-- /.info-box-content -->
+                    </div><!-- /.info-box -->
                 </div>
             </div>
-        </div><!-- /nivel 2 -->  
+        </div><!-- /nivel 2 -->
+
         <div class="col-md-4 col-sm-4 col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
@@ -141,7 +152,7 @@
                                 <a href="#" onclick="exporta_excel_blindaje('Nivel 4','INCUMPLIMIENTO',document.getElementById('bloque_ant_n4').value)" ><button class='btn btn-success btn-xs'> Exportar a Excel </button></a>
                         </div><!-- /.info-box-content -->
                     </div><!-- /.info-box -->
-                    
+
                     <div class="info-box">
                         <span class="info-box-icon bg-aqua"><i class="ion ion-android-archive"></i></span>
                         <div class="info-box-content">
@@ -154,9 +165,9 @@
                     </div><!-- /.info-box -->
                 </div>
             </div>
-        </div><!-- /nivel 4 -->  
-        
-    </div>   
+        </div><!-- /nivel 4 -->
+
+    </div>
 </section>
 <?php
     mysqli_close($link);

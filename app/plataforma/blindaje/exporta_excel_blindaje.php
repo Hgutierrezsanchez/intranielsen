@@ -37,8 +37,14 @@ elseif ($reporte == "REAGENDAMIENTO"){
         $fecha=substr($fecha, 0,4).substr($fecha, -5,2).substr($fecha, -2);
     }
     $sql.=",UBICACION,bb.desde,bb.hasta,time(now()) ahora,hd.observacion from  (tbl_blindaje_hist_gestion_hd hd inner join tbl_pendiente_blindaje pb on pb.NMRO_ORDEN=hd.NMRO_ORDEN) inner join tbl_blindaje_bloques bb on pb.CODI_HORARIO=bb.bloque where hd.Fecha='$fecha' and accion='REAGENDAMIENTO'";
+}
+elseif ($reporte == "REAGENDAREGISTRADOS"){
 
-
+    $fecha=$bloque;
+    if (substr($fecha,4,1)=="-" || substr($fecha,4,1)=="/" ){
+        $fecha=substr($fecha, 0,4).substr($fecha, -5,2).substr($fecha, -2); //Fecha Anterior: 2017-09-24 - Bloque: .....  A  Fecha Nueva: 2017-09-25 - Bloque: 10-13
+    }
+    $sql.=",UBICACION,bb.desde,bb.hasta,time(now()) ahora,hd.motivo,hd.id_usuario,hd.observacion,concat('Fecha Anterior: ',hd.fecha_old,' - Bloque: ',hd.bloque_old,'  A  Fecha Nueva: ',hd.fecha_new,' - Bloque: ',hd.bloque_new) detalle from  (tbl_blindaje_reagendamientos hd inner join tbl_pendiente_blindaje pb on pb.NMRO_ORDEN=hd.NMRO_ORDEN) inner join tbl_blindaje_bloques bb on pb.CODI_HORARIO=bb.bloque where date(hd.Fecha)='$fecha' ";
 
 }
 elseif ($reporte == "BANDEJA_USUARIO"){
@@ -100,6 +106,7 @@ elseif ($reporte == "BANDEJA_BUSCAR"){
 $sql.=" Order by FECHA_COMPROMISO Asc,COMUNA,desde";
 
 
+
 $query=mysqli_query($linkc,$sql);
 $registros = mysqli_num_rows($query);
 
@@ -134,8 +141,6 @@ if ($registros > 0) {
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L1', 'FECHA_OT');
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('M1', 'TR');
     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('N1', 'DIAS');
-    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O1', 'REAGENDAMIENTO AUTODETECTADO');
-
     $i = 2;
     while ($registro = mysqli_fetch_object ($query)) {
 
@@ -160,12 +165,38 @@ if ($registros > 0) {
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('L'.$i, $registro -> FECHA_OT);
 
-        if (isset($registro -> observacion)){
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, $registro -> observacion);
+        if ($reporte == "REAGENDAMIENTO"){
+          $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O1', 'REAGENDAMIENTO AUTODETECTADO');
+          $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O1', 'UBICACION');
+          if (isset($registro -> observacion)){
+              $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, $registro -> observacion);
+          }
+          if (isset($registro -> UBICACION)){
+              $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$i, $registro -> UBICACION);
+          }
         }
-        if (isset($registro -> UBICACION)){
-            $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$i, $registro -> UBICACION);
+        elseif ($reporte == "REAGENDAREGISTRADOS"){
+          $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O1', 'REAGENDAMIENTO HD USUARIO');
+          $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P1', 'MOTIVO');
+          $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q1', 'OBSERVACION');
+          $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R1', 'DETALLE');
+          if (isset($registro -> id_usuario)){
+              $objPHPExcel->setActiveSheetIndex(0)->setCellValue('O'.$i, $registro -> id_usuario);
+          }
+          if (isset($registro -> motivo)){
+              $objPHPExcel->setActiveSheetIndex(0)->setCellValue('P'.$i, $registro -> motivo);
+          }
+          if (isset($registro -> observacion)){
+              $objPHPExcel->setActiveSheetIndex(0)->setCellValue('Q'.$i, $registro -> observacion);
+          }
+          if (isset($registro -> detalle)){
+              $objPHPExcel->setActiveSheetIndex(0)->setCellValue('R'.$i, $registro -> detalle);
+          }
         }
+
+
+
+
 
         $datetime1 = date('Y-m-d');
         $datetime2 = $registro -> FECHA_OT;
@@ -197,7 +228,7 @@ if ($registros > 0) {
     mysqli_close($linkc);
 
     //autisize para las columna
-    foreach(range('A','O') as $columnID)
+    foreach(range('A','R') as $columnID)
     {
         $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
     }
